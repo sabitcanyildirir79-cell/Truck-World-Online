@@ -41,11 +41,40 @@ const createScene = () => {
         "./",
         "volvo_fh16_truck_lowpoly.glb",
         scene,
-        function(meshes) {
+        function (meshes) {
+
             const truck = meshes[0];
 
             truck.position = new BABYLON.Vector3(0, 0, 0);
             truck.scaling = new BABYLON.Vector3(1, 1, 1);
+
+            let speed = 0;
+            const keys = {};
+
+            window.addEventListener("keydown", (e) => {
+                keys[e.key.toLowerCase()] = true;
+            });
+
+            window.addEventListener("keyup", (e) => {
+                keys[e.key.toLowerCase()] = false;
+            });
+
+            scene.onBeforeRenderObservable.add(() => {
+
+                if (keys["w"]) speed = 0.12;
+                else if (keys["s"]) speed = -0.08;
+                else speed = 0;
+
+                if (keys["a"]) truck.rotation.y -= 0.03;
+                if (keys["d"]) truck.rotation.y += 0.03;
+
+                truck.position.x += Math.sin(truck.rotation.y) * speed;
+                truck.position.z += Math.cos(truck.rotation.y) * speed;
+
+                camera.target.copyFrom(truck.position);
+
+            });
+
         }
     );
 
@@ -60,4 +89,4 @@ engine.runRenderLoop(() => {
 
 window.addEventListener("resize", () => {
     engine.resize();
-});
+});,
