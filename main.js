@@ -1,12 +1,7 @@
-BABYLON.SceneLoader.ImportMesh(
-    "",
-    "./",
-    "scene.gltf",
-    scene,
-    function (meshes) {
-        const truck = meshes[0];
+const truck = BABYLON.MeshBuilder.CreateBox("truck", {
+    width: 2,
+    height: 2,
+    depth: 5
+}, scene);
 
-        truck.scaling = new BABYLON.Vector3(1, 1, 1);
-        truck.position = new BABYLON.Vector3(0, 0, 0);
-    }
-);
+truck.position.y = 1;
